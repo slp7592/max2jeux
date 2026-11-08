@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Petit Creeper et les Diamants</title>
+<title>Petit Creeper et les Squelettes</title>
 <style>
   html,body{margin:0;height:100%;overflow:hidden;background:#1b1030;touch-action:none;user-select:none;-webkit-user-select:none}
   canvas{display:block;width:100vw;height:100vh}
@@ -558,7 +558,7 @@ function drawTitle(){
   ctx.fillStyle='rgba(30,10,60,.45)';ctx.fillRect(0,0,VW,VH);
   const bounce=Math.sin(time*3)*6;
   text('Petit Creeper',VW/2,130+bounce,64,'#8be36a');
-  text('et les Diamants',VW/2,195+bounce,46,'#7ff');
+  text('et les Squelettes',VW/2,195+bounce,46,'#7ff');
   // mascotte
   const fake={x:VW/2-18,y:GROUND-44-Math.abs(Math.sin(time*3))*40,w:36,h:44,face:1,squash:0,inv:0,walk:time*4,onGround:false,blink:2};
   drawCreeper(fake);
