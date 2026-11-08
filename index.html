@@ -37,7 +37,7 @@
   nav a:hover{background:rgba(255,255,255,.06);transform:translateX(3px)}
   nav a.active{background:var(--panel2);border-color:rgba(255,210,63,.55);box-shadow:inset 4px 0 0 var(--accent)}
   .num{width:40px;height:40px;flex:none;border-radius:11px;display:grid;place-items:center;font-weight:bold;
-    font-size:16px;color:#1b1035;box-shadow:0 3px 0 rgba(0,0,0,.35)}
+    font-size:19px;color:#1b1035;box-shadow:0 3px 0 rgba(0,0,0,.35)}
   .info{min-width:0}
   .info b{display:block;font-size:15px;line-height:1.25}
   .info small{display:block;color:var(--muted);font-size:12px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -230,11 +230,12 @@ function renderList(){
     const a = document.createElement("a");
     a.href = "#" + encodeURIComponent(idOf(g));
     a.dataset.id = idOf(g);
-    const label = /^\d+$/.test(idOf(g)) ? idOf(g) : String(i + 1).padStart(2, "0");
-    a.innerHTML = `<div class="num" style="background:${COLORS[i % COLORS.length]}">${label}</div>
-      <div class="info"><b></b><small></small></div>`;
+    const initial = (g.title.match(/[\p{L}\p{N}]/u) || ["?"])[0].toUpperCase();
+    a.innerHTML = `<div class="num" style="background:${COLORS[i % COLORS.length]}"></div>
+      <div class="info"><b></b>${g.desc ? "<small></small>" : ""}</div>`;
+    a.querySelector(".num").textContent = initial;
     a.querySelector("b").textContent = g.title;
-    a.querySelector("small").textContent = g.desc || g.file;
+    if (g.desc) a.querySelector("small").textContent = g.desc;
     els.list.appendChild(a);
   });
   if (!shown.length) els.list.innerHTML = `<div class="msg">Aucun jeu ne correspond à « ${escapeHtml(q)} ».</div>`;
@@ -293,7 +294,7 @@ addEventListener("hashchange", route);
     els.count.textContent = "Mode fichier local";
     return;
   }
-  games = await discover();
+  games = (await discover()).sort((a, b) => a.title.localeCompare(b.title, "fr", {sensitivity: "base", numeric: true}));
   if (!games.length){
     els.list.innerHTML = `<div class="msg">Aucun jeu trouvé dans ce dossier.</div>`;
     els.count.textContent = "0 jeu";
